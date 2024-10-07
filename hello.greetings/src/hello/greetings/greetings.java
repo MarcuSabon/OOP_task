@@ -1,14 +1,22 @@
 package hello.greetings;
 
-public class greetings{
-	public static void main(String[] args) {
-  System.out.print("Greetings ");
-  int i=0;
-  while (i < args.length) {
-    System.out.printf(" %s", args[i]);
-    i = i + 1;
+import java.io.PrintStream;
+
+
+public class greetings {
+
+  public static void main(String[] args) {
+    greetings(System.out,args);
   }
-  System.out.println("!");
-  return;
-	}
-}
+  
+  public static void greetings(PrintStream ps, String[] args) {
+    System.out.print("Greetings");
+    int i = 0;
+    while (i < args.length) {
+      System.out.printf(" %s", args[i]);
+      i = i + 1;
+    }
+    System.out.println("!");
+    return;
+  }
+}  
