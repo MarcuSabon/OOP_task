@@ -1,9 +1,9 @@
-package hello.greetings;
+package hello.greetings.tests;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-//import hello.greetings.greetings;
+import hello.greetings.Greetings;
 
 public class TestGreetings {
 
@@ -30,7 +30,7 @@ public class TestGreetings {
 
     // Calling your code, with our print stream 
     // and our names.
-    greetings.greetings(ps, names);
+    Greetings.greetings(ps, names);
 
     // Checkout the output of your code.
     checkOutput(baos, names);
@@ -45,7 +45,7 @@ public class TestGreetings {
 
     // Calling your code, with our print stream 
     // and with no names.
-    greetings.greetings(ps, strings);
+    Greetings.greetings(ps, strings);
 
     // Checkout the output of your code.
     checkOutput(baos, strings);
@@ -60,7 +60,7 @@ public class TestGreetings {
       // and no array of names. Your code is expected 
       // to resist to that.
       String[] strings = null;
-      greetings.greetings(ps, strings);
+      Greetings.greetings(ps, strings);
     } catch (NullPointerException ex) {
       ex.printStackTrace(System.err);
       System.err.println("  Your code has thrown a null-pointer exception.");
