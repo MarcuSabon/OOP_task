@@ -118,9 +118,7 @@ public class HangedManSJ{
 			}
 
 			char essai = entree.charAt(0);
-			if (essai >= 'A' && essai <= 'Z') {
-				essai = Character.toLowerCase(essai);
-			}
+			
 
 			
 
