@@ -19,10 +19,6 @@ public class Game {
 		this.rnd = new Random();
 		this.hm = new HangedMan(words);
 		this.more_words = words.length;
-		
-		
-		
-		
 	}
 	
 	public void play() throws IOException {
