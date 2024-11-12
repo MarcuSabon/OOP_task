@@ -14,13 +14,17 @@ import java.io.EOFException;
 
 public class InputStream {
 	
+	private byte[] buffer;
+    private int position;    
+    private int size;
   /**
    * Constructs an input stream from the given output stream
    */
   public InputStream(OutputStream s) {
-    // TODO
-    throw new RuntimeException("NYI");
-  }
+    this.buffer = s.getBytes();
+    this.position = 0;
+    this.size = s.getSize()
+;  }
 
   /**
    * @return the number of available bytes in this input stream.
@@ -31,8 +35,10 @@ public class InputStream {
   public int available() {
 	 //return 0 quand ca peut revenir
 	  // return -1 quand il y en aura plus
-    // TODO
-    throw new RuntimeException("NYI");
+	  if (position < size) {
+          return size - position; 
+      }
+      return -1;
   }
   
   /**
@@ -42,8 +48,12 @@ public class InputStream {
    * @throws IllegalStateException if there are no more byte to read
    */
   public byte read() {
-    
-    throw new IllegalStateException("no more byte");
+	  if (position >= size) {
+          throw new IllegalStateException("no read more");
+      }
+	  byte value = buffer[position]; 
+      position++;                
+      return value;
   }
   
 }

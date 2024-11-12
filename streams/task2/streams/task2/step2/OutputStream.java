@@ -54,7 +54,13 @@ public class OutputStream {
    * each time the array is grown.
    */
   public void write(byte value) {
-    // TODO
-    throw new RuntimeException("NYI");
+	  if (position >= tab.length) {
+          
+          byte[] newTab = new byte[tab.length + delta];
+          System.arraycopy(tab, 0, newTab, 0, tab.length);
+          tab = newTab; 
+      }
+      tab[position] = value;
+      position++; 
   }
 }
