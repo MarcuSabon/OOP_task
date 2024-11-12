@@ -21,7 +21,7 @@ public class InputStream {
    */
   public byte read() {
 	  if (position >= buffer.length) {
-          throw new RuntimeException("Fin du buffer atteinte.");
+          throw new RuntimeException("Fin boeuf");
       }
       byte value = buffer[position];  
       position++;                     

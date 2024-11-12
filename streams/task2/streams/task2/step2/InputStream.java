@@ -13,7 +13,7 @@ import java.io.EOFException;
  */
 
 public class InputStream {
-
+	
   /**
    * Constructs an input stream from the given output stream
    */
@@ -29,6 +29,8 @@ public class InputStream {
    *         Returning -1 indicates the end of the stream.
    */
   public int available() {
+	 //return 0 quand ca peut revenir
+	  // return -1 quand il y en aura plus
     // TODO
     throw new RuntimeException("NYI");
   }
@@ -40,8 +42,8 @@ public class InputStream {
    * @throws IllegalStateException if there are no more byte to read
    */
   public byte read() {
-    // TODO
-    throw new RuntimeException("NYI");
+    
+    throw new IllegalStateException("no more byte");
   }
   
 }

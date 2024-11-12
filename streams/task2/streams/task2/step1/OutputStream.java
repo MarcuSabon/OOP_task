@@ -20,7 +20,7 @@ public class OutputStream {
    */
   public void write(byte value) {
 	  if (position >= buffer.length) {
-          throw new RuntimeException("Le buffer est plein.");
+          throw new RuntimeException("Boeuf plein");
       }
       buffer[position] = value; 
       position++;

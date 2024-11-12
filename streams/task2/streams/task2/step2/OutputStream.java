@@ -13,7 +13,9 @@ package streams.task2.step2;
  */
 
 public class OutputStream {
-  
+  private byte[] tab;
+  private int delta;
+  private int position;
   /**
    * Constructs an output stream with an initial capacity
    * of the given number of bytes.
@@ -22,8 +24,9 @@ public class OutputStream {
    * @param delta is the number of bytes to grow the array by.
    */
   public OutputStream(int capacity, int delta) {
-    // TODO
-    throw new RuntimeException("NYI");
+    this.tab = new byte[capacity];
+    this.delta = delta;
+    this.position = 0;
   }
   
   /**
@@ -31,8 +34,9 @@ public class OutputStream {
    * written to this output stream.
    */
   public byte[] getBytes() { 
-    // TODO
-    throw new RuntimeException("NYI");
+	  byte[] result = new byte[position]; 
+      System.arraycopy(tab, 0, result, 0, position); 
+      return result;
   }
 
   /**
@@ -40,8 +44,7 @@ public class OutputStream {
    * to this output stream,
    */
   public int getSize() {
-    // TODO
-    throw new RuntimeException("NYI");
+    return position;
   }
 
   /**
