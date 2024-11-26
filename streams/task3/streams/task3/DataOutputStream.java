@@ -1,5 +1,7 @@
 package streams.task3;
 
+import java.io.UnsupportedEncodingException;
+
 import streams.task2.step2.OutputStream;
 
 /**
@@ -22,35 +24,34 @@ public class DataOutputStream {
    * Encoded over 8-bytes, with big-endian encoding.
    */
   public void writeDouble(double value) {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
-  }
-
+	    writeLong(Double.doubleToRawLongBits(value));
+	}
   /**
    * Writes the given float value.
    * Encoded over 4-bytes, with big-endian encoding.
    */
   public void writeFloat(float value) {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
-  }
+	    writeInt(Float.floatToRawIntBits(value));
+	}
 
   /**
    * Writes the given long value.
    * Encoded over 8-bytes, with big-endian encoding.
    */
   public void writeLong(long value) {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
-  }
+	    for (int i = 7; i >= 0; i--) {
+	        writeByte((byte) (value >> (i * 8)));
+	    }
+	}
 
   /**
    * Writes the given integer value
    * Encoded over 4-bytes, with big-endian encoding.
    */
   public void writeInt(int value) {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+	  for (int i = 3; i >= 0; i--) {
+		  writeByte((byte) (value >> (i * 8)));
+		  }
   }
   
   /**
@@ -58,16 +59,15 @@ public class DataOutputStream {
    * Encoded over 2-bytes, with big-endian encoding.
    */
   public void writeShort(short value) {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+	  writeByte((byte) ((value >> 8) & 0xFF));
+	  writeByte((byte) (value & 0xFF));
   }
 
   /**
    * Writes the given byte value
    */
   public void writeByte(byte value) {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+	 os.write(value);
   }
 
   /**
@@ -75,25 +75,33 @@ public class DataOutputStream {
    * Encoded over 1-bytes.
    */
   public void writeBoolean(boolean value) {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+	  if(value) {
+		  writeByte((byte) 1);
+	  }
+	  else {
+		  writeByte((byte) 0);
+	  }
   }
 
   /**
    * Writes the given character as UTF-8 encoded character. 
    */
   public void writeChar(char c) {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+	  writeByte((byte) ((c >> 8) & 0xFF));
+	  writeByte((byte) (c & 0xFF)); 
   }
 
   /**
    * Writes the given string as a sequence of 
    * UTF-8 encoded characters. 
+ * @throws UnsupportedEncodingException 
    */
-  public void writeUTF(String s) {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+  public void writeUTF(String s) throws UnsupportedEncodingException {
+	  byte[] bytes = s.getBytes("UTF-8");
+      writeShort((short) bytes.length);
+      for (byte b : bytes) {
+          writeByte(b);
+      }
   }
 
 }

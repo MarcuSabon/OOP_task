@@ -22,8 +22,7 @@ public class DataInputStream {
    *         false otherwise.
    */
   public boolean endOfStream() {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+    return is.available() == 0;
   }
 
   /**
@@ -31,17 +30,29 @@ public class DataInputStream {
    * that was encoded over 8-bytes, with big-endian encoding.
    */
   public double readDouble() {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+	  int valU1 = readByte();//& 0xFF;
+	  int valU2 = readByte();// & 0xFF;
+	  int valU3 = readByte();//& 0xFF;
+	  int valU4 = readByte();// & 0xFF;
+	  int valU5 = readByte();//& 0xFF;
+	  int valU6 = readByte();// & 0xFF;
+	  int valU7 = readByte();//& 0xFF;
+	  int valU8 = readByte();// & 0xFF;
+	  return ((valU1<<56)|(valU2<<48)|(valU3<<40)|(valU4<<32)|(valU5<<24)|(valU6<<16)|(valU7<<8)|valU8);
   }
+  
 
   /**
    * @return a float value
    * that was encoded over 4-bytes, with big-endian encoding.
    */
   public float readFloat() {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+	  int valU1 = readByte();
+	  int valU2 = readByte();
+	  int valU3 = readByte();
+	  int valU4 = readByte();
+	  int valeur = ((valU1<<24)|(valU2<<16)|(valU3<<8)|valU4);
+	  return Float.intBitsToFloat(valeur);
   }
 
   /**
@@ -49,8 +60,16 @@ public class DataInputStream {
    * that was encoded over 8-bytes, with big-endian encoding.
    */
   public long readLong() {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+	  int valU1 = readByte();//& 0xFF;
+	  int valU2 = readByte();// & 0xFF;
+	  int valU3 = readByte();//& 0xFF;
+	  int valU4 = readByte();// & 0xFF;
+	  int valU5 = readByte();//& 0xFF;
+	  int valU6 = readByte();// & 0xFF;
+	  int valU7 = readByte();//& 0xFF;
+	  int valU8 = readByte();// & 0xFF;
+	  int valeur =((valU1<<56)|(valU2<<48)|(valU3<<40)|(valU4<<32)|(valU5<<24)|(valU6<<16)|(valU7<<8)|valU8);
+	  return Double.doubleToLongBits(valeur);
   }
 
   /**
@@ -58,8 +77,11 @@ public class DataInputStream {
    * that was encoded over 4-bytes, with big-endian encoding.
    */
   public int readInt() {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+	  int valU1 = readByte() & 0xFF;
+	  int valU2 = readByte() & 0xFF;
+	  int valU3 = readByte() & 0xFF;
+	  int valU4 = readByte() & 0xFF;
+	  return ((valU1<<24)|(valU2<<16)|(valU3<<8)|valU4);
   }
 
   /**
@@ -67,16 +89,17 @@ public class DataInputStream {
    * that was encoded over 2-bytes, with big-endian encoding.
    */
   public short readShort() {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+    int valU1 = readByte() & 0xFF;
+    int valU2 = readByte() & 0xFF;
+    return (short)((valU1<<8)|valU2);
   }
 
   /**
    * @returns a signed byte value
    */
   public byte readByte() {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+	  int valU = is.read();
+	  return (byte) valU;
   }
 
   /**
@@ -84,8 +107,7 @@ public class DataInputStream {
    * Encoded over 1-bytes.
    */
   public boolean readBoolean() {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+    return readByte() != 0;
   }
 
   /**
@@ -95,8 +117,7 @@ public class DataInputStream {
    *         cannot be decoded as a utf8-encoded character.
    */
   public char readChar() {
-    
-    throw new RuntimeException("Not Yet Implemented");
+	  return (char)readByte();
   }
 
   /**
@@ -106,8 +127,12 @@ public class DataInputStream {
    *         cannot be decoded as a utf8-encoded character.
    */
   public String readUTF() {
-    // TODO
-    throw new RuntimeException("Not Yet Implemented");
+	  int length = readInt(); 
+	    byte[] bytes = new byte[length];
+	    for (int i = 0; i < length; i++) {
+	        bytes[i] = readByte();
+	    }
+	    return new String(bytes);
   }
 
 }
