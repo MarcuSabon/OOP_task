@@ -96,12 +96,17 @@ public class DataOutputStream {
    * UTF-8 encoded characters. 
  * @throws UnsupportedEncodingException 
    */
-  public void writeUTF(String s) throws UnsupportedEncodingException {
-	  byte[] bytes = s.getBytes("UTF-8");
-      writeShort((short) bytes.length);
-      for (byte b : bytes) {
-          writeByte(b);
-      }
-  }
+  public void writeUTF(String s) {
+	  
+	    try {
+	        byte[] bytes = s.getBytes("UTF-8");
+	        writeShort((short) bytes.length);
+	        for (byte b : bytes) {
+	            writeByte(b);
+	        }
+	    } catch (UnsupportedEncodingException e) {
+	        throw new RuntimeException("UTF-8 encoding not supported", e);
+	    }
+	}
 
 }
