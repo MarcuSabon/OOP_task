@@ -95,7 +95,7 @@ public class DataInputStream {
    *         cannot be decoded as a utf8-encoded character.
    */
   public char readChar() {
-    // TODO
+    
     throw new RuntimeException("Not Yet Implemented");
   }
 
