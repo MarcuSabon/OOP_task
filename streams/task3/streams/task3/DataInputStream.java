@@ -3,6 +3,8 @@ package streams.task3;
 import java.io.IOException;
 import java.io.UTFDataFormatException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+
 import streams.task2.step2.InputStream;
 
 /**
@@ -119,29 +121,7 @@ public class DataInputStream {
 	 *                                utf8-encoded character.
 	 */
 	public char readChar() {
-		int c1 = readByte() & 0xFF;
-
-	    if (c1 <= 0x7F) {
-	        // 1-byte character: 0xxxxxxx
-	        return (char) c1;
-	    } else if (c1 >= 0xC0 && c1 <= 0xDF) {
-	        // 2-byte character: 110xxxxx 10xxxxxx
-	        int c2 = readByte() & 0xFF;
-	        if ((c2 & 0xC0) != 0x80) {
-	            throw new IllegalStateException("Malformed input: invalid UTF-8 sequence");
-	        }
-	        return (char) (((c1 & 0x1F) << 6) | (c2 & 0x3F));
-	    } else if (c1 >= 0xE0 && c1 <= 0xEF) {
-	        // 3-byte character: 1110xxxx 10xxxxxx 10xxxxxx
-	        int c2 = readByte() & 0xFF;
-	        int c3 = readByte() & 0xFF;
-	        if ((c2 & 0xC0) != 0x80 || (c3 & 0xC0) != 0x80) {
-	            throw new IllegalStateException("Malformed input: invalid UTF-8 sequence");
-	        }
-	        return (char) (((c1 & 0x0F) << 12) | ((c2 & 0x3F) << 6) | (c3 & 0x3F));
-	    } else {
-	        throw new IllegalStateException("Malformed input: invalid UTF-8 sequence");
-	    }
+		return (char) readByte();
 	    }
 
 	/**
@@ -154,12 +134,12 @@ public class DataInputStream {
 	 * @throws UnsupportedEncodingException
 	 */
 	public String readUTF() {
-		StringBuilder result = new StringBuilder();
-	    char c = readChar();
-	    while (c != '\n') {
-	        result.append(c);
-	        c = readChar();
+	    short length = readShort();
+	    byte[] tab= new byte[length];
+	    for (int i=0;i<length;i++) {
+	    	tab[i]=readByte();
 	    }
-	    return result.toString();
+	    return new String(tab,StandardCharsets.ISO_8859_1);
+
 
 }}
