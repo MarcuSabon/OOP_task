@@ -11,16 +11,16 @@ public class DynamicByteArrayOutputStream extends ByteArrayOutputStream {
 	@Override
 	public void write(byte value) {
 		if (available() !=0) {
-			grow();
+			agrandir();
 		}
 		buffer[position++] = value;
 
 	}
 
-	private void grow() {
+	private void agrandir() {
 		byte[] newboeuf = new byte[buffer.length + delta];
 		System.arraycopy(buffer, 0, newboeuf, 0, buffer.length);
 		buffer = newboeuf;
-
+		size += delta;
 	}
 }

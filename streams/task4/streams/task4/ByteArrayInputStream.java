@@ -19,7 +19,8 @@ public class ByteArrayInputStream implements InputStream {
 	}
 
 	public ByteArrayInputStream(ByteArrayOutputStream s) {
-		this(s.getBytes());
+		this.size = s.getSize();
+		this.buffer = s.getBytes();
 	}
 
 	@Override

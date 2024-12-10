@@ -7,7 +7,7 @@ public class ByteBufferOutputStream extends ByteArrayOutputStream {
 	private Chunk tail; 
 
 	public ByteBufferOutputStream(int chunkSize) {
-		super(new byte[chunkSize], 0, chunkSize); 
+		super(new byte[chunkSize]); 
 		this.chunkSize = chunkSize;
 		this.head = new Chunk(buffer); 
 		this.tail = head;
@@ -15,12 +15,12 @@ public class ByteBufferOutputStream extends ByteArrayOutputStream {
 	}
 	@Override
 	public void write(byte value) {
-		if (available()>0) {
-            grow();
+		if (available()!=0) {
+            agrandir();
         }
         buffer[position++] = value;
 	}
-	public void grow() {
+	public void agrandir() {
 		Chunk newChunk = new Chunk(new byte[chunkSize]);
 		tail.next = newChunk;
 		tail = newChunk;
