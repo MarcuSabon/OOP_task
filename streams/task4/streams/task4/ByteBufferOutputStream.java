@@ -22,6 +22,7 @@ public class ByteBufferOutputStream extends ByteArrayOutputStream {
 		if (available() == 0) {
 			agrandir();
 		}
+		
 	}
 
 	@Override

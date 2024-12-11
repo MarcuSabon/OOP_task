@@ -20,7 +20,7 @@ public class ByteArrayOutputStream implements OutputStream {
 
 	@Override
 	public int available() {
-		if (size - position == 0) {
+		if (size - position +1 == 0) {
 			return 0;
 		} else if (position < size) {
 			return size - position;
