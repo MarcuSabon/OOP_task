@@ -19,9 +19,13 @@ public class ByteBufferOutputStream extends ByteArrayOutputStream {
 		buffer[position] = value;
 		position++;
 		compteur++;
-		if (available() == 0) {
-			agrandir();
+		if (size - position == 0) {
+			agrandir();	
 		}
+		else if(available() < 0) {
+			throw new IllegalStateException("End of Stream");
+		}
+
 		
 	}
 

@@ -23,7 +23,7 @@ public class DataInputStream {
 	 * @return true if the end of the stream has been reached, false otherwise.
 	 */
 	public boolean endOfStream() {
-		return is.available() <= 0;
+		return is.available() <=0;
 	}
 
 	/**
