@@ -12,15 +12,15 @@ public class HangedMan {
 	/*
 	 * The two constructors.
 	 */
-	
 
 	public HangedMan(char[] words[]) {
-		this.words = new char[words.length][]; 
-        for (int i = 0; i < words.length; i++) {
-            this.words[i] = words[i]; 
-        }
-		
+		this.words = new char[words.length][];
+		for (int i = 0; i < words.length; i++) {
+			this.words[i] = words[i];
+		}
+
 	};
+
 	public HangedMan(String words[]) {
 		this.words = new char[words.length][];
 		for (int i = 0; i < words.length; i++) {
@@ -32,17 +32,20 @@ public class HangedMan {
 	 * Initializes a new game with nth word.
 	 */
 	public void newGame(int n) {
-		
-		this.mot_a_deviner = words[n]; 
-		this.lettres_devines = new char[mot_a_deviner.length]; 
-		
-		
+
+		this.mot_a_deviner = words[n];
+		this.lettres_devines = new char[mot_a_deviner.length];
+
 		for (int i = 0; i < lettres_devines.length; i++) {
 			lettres_devines[i] = '_';
 		}
-		
+
 		this.nbr_incorrecte = 0;
 	};
+
+	public void newGame(int n, int ntries) {
+		//a faire qui donnera l'indice du mot secret mais aussi le nombre d'essais autorisés. 
+	}
 
 	/*
 	 * Once a game has been initialized, this method is used to propose a character
@@ -52,8 +55,8 @@ public class HangedMan {
 		for (int i = 0; i < mot_a_deviner.length; i++) {
 			if (mot_a_deviner[i] == c) {
 				if (lettres_devines[i] != c) {
-				lettres_devines[i] = c;
-				fini = true;
+					lettres_devines[i] = c;
+					fini = true;
 				}
 			}
 		}
