@@ -15,12 +15,12 @@ class Keyboard {
     	return (char) my_is.read();
     }
     
-    char readLine() {
-    	byte[] lire_ligne;
-    	while(my_is.available()!=0) {
-    		lire_ligne = readChar();
-    	}
-    	return lire_ligne;
+    String readLine() {
+    	StringBuilder lire_ligne = new StringBuilder();
+        while (my_is.available() != 0) {
+            lire_ligne.append(readChar());
+        }
+        return lire_ligne.toString();
     }
   }
 
