@@ -40,11 +40,16 @@ public class HangedMan {
 			lettres_devines[i] = '_';
 		}
 
-		this.nbr_incorrecte = 0;
+		this.nbr_incorrecte = 7;
 	};
 
 	public void newGame(int n, int ntries) {
-		//a faire qui donnera l'indice du mot secret mais aussi le nombre d'essais autorisés. 
+		this.nbr_incorrecte = ntries;
+		this.mot_a_deviner = words[n];
+		this.lettres_devines = new char[mot_a_deviner.length];
+		for (int i = 0; i < lettres_devines.length; i++) {
+			lettres_devines[i] = '_';
+		}
 	}
 
 	/*
@@ -61,7 +66,7 @@ public class HangedMan {
 			}
 		}
 		if (!fini) {
-			nbr_incorrecte++;
+			nbr_incorrecte--;
 		}
 	};
 
@@ -90,6 +95,6 @@ public class HangedMan {
 	 * Returns true if the player has lost. false otherwise.
 	 */
 	public boolean lost() {
-		return (nbr_incorrecte >= 7);
+		return (nbr_incorrecte <= 0);
 	};
 }
