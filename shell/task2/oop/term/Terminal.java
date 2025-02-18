@@ -18,113 +18,125 @@
 package oop.term;
 
 import oop.graphics.Canvas;
+import oop.graphics.Font;
 import oop.graphics.Graphics;
 import oop.shell.ITerminal;
 
 public class Terminal implements ITerminal {
 
-  public Terminal(Canvas canvas, String fontName, int fontSize) {
-    throw new RuntimeException("Not Implemented Yet");
-  }
-  
-  /*
-   * Sets the cursor at the given coordinates,
-   * coordinates given in pixels on the canvas. 
-   * To translate (x,y) in (row,column), one 
-   * needs to use the font used to display 
-   * the characters, because each characters has 
-   * its own width, for a given font.
-   */
-  public void clicked(int x, int y) {
-    throw new RuntimeException("Not Implemented Yet");
-  }
-  
-  /*
-   * Request this terminal to repaint itself
-   * on the given canvas with the given graphics.
-   */
-  public void paint(Canvas canvas, Graphics g) {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	private Canvas canvas;
+    private Text text;
+    private Cursor cursor;
+    private ITerminal.Listener listener;
+    private Font font;
+    private Graphics g;
+	
+	public Terminal(Canvas canvas, String fontName, int fontSize) {
+		this.canvas = canvas;
+		this.font = g.getFont(fontName, font.PLAIN , fontSize);
+		this.text = new Text(30,80);
+		this.cursor = new Cursor(0,0);
+		
+		
+		
+	}
 
-  @Override
-  public int ncols() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	/*
+	 * Sets the cursor at the given coordinates, coordinates given in pixels on the
+	 * canvas. To translate (x,y) in (row,column), one needs to use the font used to
+	 * display the characters, because each characters has its own width, for a
+	 * given font.
+	 */
+	public void clicked(int x, int y) {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public int nrows() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	/*
+	 * Request this terminal to repaint itself on the given canvas with the given
+	 * graphics.
+	 */
+	public void paint(Canvas canvas, Graphics g) {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public void setCursor(int row, int col) {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public int ncols() {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public int column() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public int nrows() {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public int row() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public void setCursor(int row, int col) {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public void left() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public int column() {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public void right() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public int row() {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public void up() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public void left() {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public void down() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public void right() {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public void delete() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public void up() {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public void backspace() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public void down() {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public void clear() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public void delete() {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public void clear(int row) {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public void backspace() {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
-  @Override
-  public void enter() {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public void clear() {
+		text.clear();
+	}
 
-  @Override
-  public void insert(char c) {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public void clear(int row) {
+		text.clearRow(row);
+	}
 
-  @Override
-  public void set(Listener l) {
-    throw new RuntimeException("Not Implemented Yet");
-  }
+	@Override
+	public void enter() {
+		throw new RuntimeException("Not Implemented Yet");
+	}
+
+	@Override
+	public void insert(char c) {
+		throw new RuntimeException("Not Implemented Yet");
+	}
+
+	@Override
+	public void set(Listener l) {
+		throw new RuntimeException("Not Implemented Yet");
+	}
 
 }
