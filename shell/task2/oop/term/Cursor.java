@@ -23,6 +23,7 @@ public class Cursor {
     {
     	return col;
     }
+   
     public int row()
     {
     	return row;

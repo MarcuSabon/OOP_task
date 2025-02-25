@@ -20,25 +20,28 @@ package oop.term;
 import oop.graphics.Canvas;
 import oop.graphics.Font;
 import oop.graphics.Graphics;
+import oop.graphics.Graphics.Colors;
 import oop.shell.ITerminal;
 
 public class Terminal implements ITerminal {
 
 	private Canvas canvas;
-    private Text text;
-    private Cursor cursor;
-    private ITerminal.Listener listener;
-    private Font font;
-    private Graphics g;
-	
+	private Text text;
+	private Cursor cursor;
+	private ITerminal.Listener listener;
+	private Font font;
+	private String fontName;
+	private int fontSize;
+	private Graphics g;
+	private Monitor monitor;
+
 	public Terminal(Canvas canvas, String fontName, int fontSize) {
 		this.canvas = canvas;
-		this.font = g.getFont(fontName, font.PLAIN , fontSize);
-		this.text = new Text(30,80);
-		this.cursor = new Cursor(0,0);
-		
-		
-		
+		this.fontName = fontName;
+		this.fontSize = fontSize;
+		this.text = new Text(30, 80);
+		this.cursor = new Cursor(0, 0);
+
 	}
 
 	/*
@@ -48,7 +51,9 @@ public class Terminal implements ITerminal {
 	 * given font.
 	 */
 	public void clicked(int x, int y) {
-		throw new RuntimeException("Not Implemented Yet");
+		int col = x / font.getWidth('a');
+		int row = y / font.getHeight();
+		setCursor(row, col);
 	}
 
 	/*
@@ -56,87 +61,111 @@ public class Terminal implements ITerminal {
 	 * graphics.
 	 */
 	public void paint(Canvas canvas, Graphics g) {
-		throw new RuntimeException("Not Implemented Yet");
+		g.setColor(Colors.green);
+		g.setFont(g.getFont(fontName, font.PLAIN, fontSize));
+		
+		g.setColor(Colors.black);
+		g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		
+		
+		g.setColor(Colors.green);
+		//setCursor(0,0);
+		g.fillRect(ncols()*font.getWidth('a'), nrows()*font.getHeight(), font.getWidth('a'), font.getHeight());
+		
 	}
 
 	@Override
 	public int ncols() {
-		throw new RuntimeException("Not Implemented Yet");
+		return canvas.getWidth() / font.getWidth('a');
 	}
 
 	@Override
 	public int nrows() {
-		throw new RuntimeException("Not Implemented Yet");
+		return canvas.getHeight() / font.getHeight();
 	}
 
 	@Override
 	public void setCursor(int row, int col) {
-		throw new RuntimeException("Not Implemented Yet");
+		cursor.setCursor(row, col);
+		canvas.repaint();
 	}
 
 	@Override
 	public int column() {
-		throw new RuntimeException("Not Implemented Yet");
+		return cursor.column();
 	}
 
 	@Override
 	public int row() {
-		throw new RuntimeException("Not Implemented Yet");
+		return cursor.row();
 	}
 
 	@Override
 	public void left() {
-		throw new RuntimeException("Not Implemented Yet");
+		cursor.left();
 	}
 
 	@Override
 	public void right() {
-		throw new RuntimeException("Not Implemented Yet");
+		cursor.right();
 	}
 
 	@Override
 	public void up() {
-		throw new RuntimeException("Not Implemented Yet");
+		cursor.up();
 	}
 
 	@Override
 	public void down() {
-		throw new RuntimeException("Not Implemented Yet");
+		cursor.down();
 	}
 
 	@Override
 	public void delete() {
-		throw new RuntimeException("Not Implemented Yet");
+		text.delete();
+		canvas.repaint();
 	}
 
 	@Override
 	public void backspace() {
-		throw new RuntimeException("Not Implemented Yet");
+		text.backspace();
+		canvas.repaint();
 	}
 
 	@Override
 	public void clear() {
 		text.clear();
+		canvas.repaint();
 	}
 
 	@Override
 	public void clear(int row) {
 		text.clearRow(row);
+		canvas.repaint();
 	}
 
 	@Override
 	public void enter() {
-		throw new RuntimeException("Not Implemented Yet");
+		text.enter();
+		canvas.repaint();
 	}
 
 	@Override
 	public void insert(char c) {
-		throw new RuntimeException("Not Implemented Yet");
+		text.insert(c);
+		canvas.repaint();
 	}
 
 	@Override
 	public void set(Listener l) {
-		throw new RuntimeException("Not Implemented Yet");
+		this.listener = l;
 	}
+
+	@Override
+	public void monitor(Monitor l) {
+		this.monitor = l;
+		
+	}
+
 
 }
