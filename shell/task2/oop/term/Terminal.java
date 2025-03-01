@@ -100,8 +100,7 @@ public class Terminal implements ITerminal {
 			g.setColor(Colors.green);
 			g.drawString(String.valueOf(text.grid_returner(posex, posey)), posey * font.getWidth('a'),posex * font.getHeight());
 		}
-		// g.setColor(Colors.green);
-		// g.fillRect(x, y, font.getWidth('a'), font.getHeight());
+
 
 	}
 
