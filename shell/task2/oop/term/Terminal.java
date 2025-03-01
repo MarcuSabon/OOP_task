@@ -22,6 +22,7 @@ import oop.graphics.Font;
 import oop.graphics.Graphics;
 import oop.graphics.Graphics.Colors;
 import oop.shell.ITerminal;
+import oop.tasks.Task;
 
 public class Terminal implements ITerminal {
 
@@ -34,6 +35,7 @@ public class Terminal implements ITerminal {
 	private int fontSize;
 	private Graphics g;
 	private Monitor monitor;
+	private boolean visible;
 
 	public Terminal(Canvas canvas, String fontName, int fontSize) {
 		this.canvas = canvas;
@@ -41,6 +43,8 @@ public class Terminal implements ITerminal {
 		this.fontSize = fontSize;
 		this.text = new Text(30, 80);
 		this.cursor = new Cursor(0, 0);
+		this.visible = true;
+		startCursorBlinking();
 
 	}
 
@@ -54,6 +58,7 @@ public class Terminal implements ITerminal {
 		int col = x / font.getWidth('a');
 		int row = y / font.getHeight();
 		setCursor(row, col);
+		text.setText(row, col);
 	}
 
 	/*
@@ -61,27 +66,64 @@ public class Terminal implements ITerminal {
 	 * graphics.
 	 */
 	public void paint(Canvas canvas, Graphics g) {
-		g.setColor(Colors.green);
-		g.setFont(g.getFont(fontName, font.PLAIN, fontSize));
-		
+		int posex = 0;
+		int posey = 0;
 		g.setColor(Colors.black);
 		g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		
-		
+		font = g.getFont(fontName, Font.PLAIN, fontSize);
+		this.cursor.setLimits(nrows(), ncols());
+		int x = column() * font.getWidth('a');
+		int y = row() * font.getHeight();
 		g.setColor(Colors.green);
-		//setCursor(0,0);
-		g.fillRect(ncols()*font.getWidth('a'), nrows()*font.getHeight(), font.getWidth('a'), font.getHeight());
-		
+		g.setFont(font);
+		for (int i = 0; i < nrows(); i++) {
+			for (int j = 0; j < ncols(); j++) {
+				char c = text.grid_returner(i, j);
+				if (c != ' ' && (i != row()+1 || j != column())) {
+					
+						g.drawString(String.valueOf(c), j * font.getWidth('a'), i * font.getHeight());
+					
+				} else {
+					posex = row() +1;
+					posey = column();
+				}
+			}
+		}
+		if (visible) {
+			g.setColor(Colors.green);
+			g.fillRect(x, y, font.getWidth('a'), font.getHeight());
+			g.setColor(Colors.black);
+			g.drawString(String.valueOf(text.grid_returner(posex, posey)), posey * font.getWidth('a'),posex * font.getHeight());
+		} else if (!visible) {
+			g.setColor(Colors.black);
+			g.fillRect(x, y, font.getWidth('a'), font.getHeight());
+			g.setColor(Colors.green);
+			g.drawString(String.valueOf(text.grid_returner(posex, posey)), posey * font.getWidth('a'),posex * font.getHeight());
+		}
+		// g.setColor(Colors.green);
+		// g.fillRect(x, y, font.getWidth('a'), font.getHeight());
+
 	}
 
-	@Override
-	public int ncols() {
-		return canvas.getWidth() / font.getWidth('a');
+	private void startCursorBlinking() {
+		Task task = Task.task();
+		task.post(new Runnable() {
+			public void run() {
+				visible = !visible;
+				canvas.repaint();
+				task.post(this, 500);
+			}
+		}, 500);
 	}
 
 	@Override
 	public int nrows() {
 		return canvas.getHeight() / font.getHeight();
+	}
+
+	@Override
+	public int ncols() {
+		return canvas.getWidth() / font.getWidth('a');
 	}
 
 	@Override
@@ -103,32 +145,39 @@ public class Terminal implements ITerminal {
 	@Override
 	public void left() {
 		cursor.left();
+		canvas.repaint();
 	}
 
 	@Override
 	public void right() {
 		cursor.right();
+		canvas.repaint();
 	}
 
 	@Override
 	public void up() {
 		cursor.up();
+		canvas.repaint();
 	}
 
 	@Override
 	public void down() {
 		cursor.down();
+		canvas.repaint();
 	}
 
 	@Override
 	public void delete() {
+		text.setText(row(), column());
 		text.delete();
 		canvas.repaint();
 	}
 
 	@Override
 	public void backspace() {
+		text.setText(row(), column());
 		text.backspace();
+		cursor.left();
 		canvas.repaint();
 	}
 
@@ -146,13 +195,17 @@ public class Terminal implements ITerminal {
 
 	@Override
 	public void enter() {
+		text.setText(row(), column());
 		text.enter();
+		cursor.setCursor(row() + 1, 0);
 		canvas.repaint();
 	}
 
 	@Override
 	public void insert(char c) {
+		text.setText(row(), column());
 		text.insert(c);
+		cursor.right();
 		canvas.repaint();
 	}
 
@@ -164,8 +217,7 @@ public class Terminal implements ITerminal {
 	@Override
 	public void monitor(Monitor l) {
 		this.monitor = l;
-		
-	}
 
+	}
 
 }
