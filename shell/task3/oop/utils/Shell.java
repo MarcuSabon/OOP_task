@@ -27,7 +27,7 @@ public class Shell implements IShell {
 	private ITerminal m_term;
 	private String m_history[];
 	private int historyIndex = 0;
-	private int hist_idx = 0;
+	private int hist_idx = -1;
 	private int lineIndex = 0;
 	private StringBuilder currentLine;
 	private Monitor monitor;
@@ -58,11 +58,12 @@ public class Shell implements IShell {
 			currentLine.setLength(0);
 			lineIndex = 0;
 			currentLine = new StringBuilder();
-			if(!clear_command) {
+			if (!clear_command) {
 				m_term.enter();
 			}
 			clear_command = false;
 			prompt();
+			hist_idx = -1;
 			break;
 		case (VirtualKeyCodes.VK_BACK_SPACE):
 			if (lineIndex != 0) {
@@ -104,21 +105,49 @@ public class Shell implements IShell {
 					lineIndex++;
 				}
 			}
-			
+
 			break;
 		case (VirtualKeyCodes.VK_UP):
-		    if (hist_idx > 0) { 
-		        hist_idx--;
-		    }
-		    
-		    String temp = currentLine.toString();
-		    m_term.clear(m_term.row() + 1);
-		    m_term.setCursor(m_term.row(), 0);
-		    prompt();
-		    if (hist_idx < historyIndex) { 
-		        insert_str(m_history[hist_idx]);
-		    }
-		    break;
+			if (historyIndex != 0) {
+				if (hist_idx < historyIndex - 1) {
+					hist_idx++;
+				}
+
+				while (lineIndex > 0) {
+					m_term.backspace();
+					lineIndex--;
+				}
+				if (hist_idx < historyIndex) {
+					currentLine.setLength(0);
+					currentLine.append(m_history[hist_idx]);
+					lineIndex = currentLine.length();
+					insert_str(currentLine.toString());
+				} else {
+					currentLine.setLength(0);
+					lineIndex = 0;
+				}
+			}
+			break;
+
+		case (VirtualKeyCodes.VK_DOWN):
+			if(historyIndex != 0) {
+			if (historyIndex > 0 && hist_idx > 0) {
+				hist_idx--;
+			}
+
+			while (lineIndex > 0) {
+				m_term.backspace();
+				lineIndex--;
+			}
+
+			if (hist_idx < historyIndex) {
+				currentLine.setLength(0);
+				currentLine.append(m_history[hist_idx]);
+				lineIndex = currentLine.length();
+				insert_str(currentLine.toString());
+			}
+			}
+			break;
 
 		default:
 			break;
@@ -133,11 +162,10 @@ public class Shell implements IShell {
 
 	@Override
 	public void typed(char keyChar) {
-		if (Character.isDefined(keyChar)) {
-			currentLine.insert(lineIndex, keyChar);
-			m_term.insert(keyChar);
-			lineIndex++;
-		}
+
+		currentLine.insert(lineIndex, keyChar);
+		lineIndex++;
+		m_term.insert(keyChar);
 
 	}
 
@@ -222,8 +250,8 @@ public class Shell implements IShell {
 			break;
 
 		default:
-			//m_term.enter();
-			//insert_str("Unknown Command\n");
+			m_term.enter();
+			insert_str("Unknown Command\n");
 			break;
 		}
 
