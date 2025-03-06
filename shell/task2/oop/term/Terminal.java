@@ -41,7 +41,7 @@ public class Terminal implements ITerminal {
 		this.canvas = canvas;
 		this.fontName = fontName;
 		this.fontSize = fontSize;
-		this.text = new Text(30, 80);
+		this.text = new Text(canvas.getWidth(), canvas.getHeight());
 		this.cursor = new Cursor(0, 0);
 		this.visible = true;
 		startCursorBlinking();
