@@ -20,20 +20,29 @@ package oop.utils;
 import oop.streams.InputStream;
 
 public class ByteInputStream extends ByteStream implements InputStream {
+	public ByteInputStream(ByteOutputStream os) {
+		super(os.m_ring);
+	}
 
-  public ByteInputStream(ByteOutputStream os) {
-    super(os.m_ring);
-    throw new RuntimeException("NYI");
-  }
+	@Override
+	public byte read() {
+		if (m_ring.empty()) {
+			throw new IllegalStateException("The stream is empty");
+		} else {
+			return m_ring.pull();
+		}
+	}
 
-  @Override
-  public byte read() {
-    throw new RuntimeException("NYI");
-  }
-
-  @Override
-  public int read(byte[] bytes, int offset, int length) {
-    throw new RuntimeException("NYI");
-  }
-
+	@Override
+	public int read(byte[] bytes, int offset, int length) {
+		int counter = 0;
+		for (int i = offset; i < offset + length; i++) {
+			if (m_ring.empty()) {
+				break;
+			}
+			bytes[i] = read();
+			counter++;
+		}
+		return counter;
+	}
 }

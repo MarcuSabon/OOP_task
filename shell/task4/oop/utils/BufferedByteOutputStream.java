@@ -32,46 +32,62 @@ import oop.streams.OutputStream;
  */
 
 public class BufferedByteOutputStream implements OutputStream {
+    private final int capacity;
+    private final OutputStream os;
+    private final byte[] buffer;
+    private int bufferIndex = 0;
+    private boolean isClosed = false;
 
-  /*
-   * The given capacity is the size of each chunk, that is,
-   * the length of the byte array used by each chunk to
-   * buffer written bytes until they can be written to
-   * the given output stream.
-   */
-  public BufferedByteOutputStream(int capacity, OutputStream os) {
-    throw new RuntimeException("NYI");
-  }
+    public BufferedByteOutputStream(int capacity, OutputStream os) {
+        this.capacity = capacity;
+        this.os = os;
+        this.buffer = new byte[capacity];
+    }
 
-  @Override
-  public void set(Listener l) {
-    throw new RuntimeException("NYI");
-  }
+    @Override
+    public void set(Listener l) {
+        os.set(l);
+    }
 
-  @Override
-  public void close() {
-    throw new RuntimeException("NYI");
-  }
+    @Override
+    public void close() {
+        flush();
+        isClosed = true;
+        os.close();
+    }
 
-  @Override
-  public boolean closed() {
-    throw new RuntimeException("NYI");
-  }
+    @Override
+    public boolean closed() {
+        return isClosed;
+    }
 
-  @Override
-  public boolean available() {
-    throw new RuntimeException("NYI");
-  }
+    @Override
+    public boolean available() {
+        return bufferIndex > 0;
+    }
 
-  @Override
-  public void write(byte bits) {
-    throw new RuntimeException("NYI");
-  }
+    @Override
+    public void write(byte bits) {
+        if (bufferIndex >= capacity) {
+            flush();
+        }
+        buffer[bufferIndex++] = bits;
+    }
 
-  @Override
-  public int write(byte[] bytes, int offset, int length) {
-    throw new RuntimeException("NYI");
-  }
+    @Override
+    public int write(byte[] bytes, int offset, int length) {
+        int written = 0;
+        for (int i = offset; i < offset + length; i++) {
+            write(bytes[i]);
+            written++;
+        }
+        return written;
+    }
 
-
+    private void flush() {
+        if (bufferIndex > 0) {
+            os.write(buffer, 0, bufferIndex);
+            bufferIndex = 0;
+        }
+    }
 }

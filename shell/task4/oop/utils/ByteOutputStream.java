@@ -20,21 +20,27 @@ package oop.utils;
 import oop.streams.OutputStream;
 
 public class ByteOutputStream extends ByteStream implements OutputStream {
+    public ByteOutputStream(int capacity) {
+        super(new ByteRing(capacity));
+    }
 
-  public ByteOutputStream(int capacity) {
-    super(new ByteRing(capacity));
-    throw new RuntimeException("NYI");
-  }
+    @Override
+    public void write(byte bits) {
+    	if(m_ring.full())
+    		throw new IllegalStateException("The stream is full");
+        m_ring.push(bits);
+    }
 
-  @Override
-  public void write(byte bits) {
-    throw new RuntimeException("NYI");
-  }
-
-  @Override
-  public int write(byte[] bytes, int offset, int length) {
-    throw new RuntimeException("NYI");
-  }
-
-
+    @Override
+    public int write(byte[] bytes, int offset, int length) {
+        int ecri = 0;
+        for (int i = offset; i < offset + length; i++) {
+            if (m_ring.full()) {
+                break;
+            }
+            m_ring.push(bytes[i]);
+            ecri++;
+        }
+        return ecri;
+    }
 }
