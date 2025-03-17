@@ -10,15 +10,36 @@ public class ByteStreamTest {
 
 	private static byte[] m_bytes = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	private static byte[] m_word = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd' };
-	private static byte[] m_spec = { '\n', (byte) 'é', '&', '#', (byte) 'ç', '/', '*', (byte) 'µ', '^', (byte) '£', '~' };
+	private static byte[] m_spec = { '\n', (byte) 'é', '&', '#', (byte) 'ç', '/', '*', (byte) 'µ', '^', (byte) '£','~' };
 	private static byte[] m_failed = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-	private static byte[] m_failed2 = {0,0,1,0,1,0,1,1,0};
+	private static byte[] m_failed2 = { 0, 0, 1, 0, 1, 0, 1, 1, 0 };
 	private static byte[] m_bytestofill = new byte[m_bytes.length];
 	private static byte[] m_wordtofill = new byte[m_word.length];
 	private static byte[] m_spectofill = new byte[m_spec.length];
 	private static byte[] m_failedtofill = new byte[20];
-	private static byte[] m_failedtofill2 = {1,0,1,0,1,0,1,1,0};
+	private static byte[] m_failedtofill2 = { 1, 0, 1, 0, 1, 0, 1, 1, 0 };
+	
+	
+	
+	
+	private static byte[] m_bytes3 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	private static byte[] m_word3 = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd' };
+	private static byte[] m_spec3 = { '\n', (byte) 'é', '&', '#', (byte) 'ç', '/', '*', (byte) 'µ', '^', (byte) '£','~' };
+	
+	private static byte[] m_bytestofill3 = new byte[m_bytes.length];
+	private static byte[] m_wordtofill3 = new byte[m_word.length];
+	private static byte[] m_spectofill3 = new byte[m_spec.length];
+	
+	private static byte[] m_word4 = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd' };
+	private static byte[] m_wordtofill4 = new byte[m_word4.length];
+	private static byte[] m_bytes4 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	private static byte[] m_bytestofill4 = new byte[m_bytes4.length];
+	
+	
+	
 	private static int variable = 0;
+	private static int variable2 = 0;
+	private static int passed = 0;
 
 	public static void main(String args[]) {
 		EventPump ep = new EventPump();
@@ -29,11 +50,15 @@ public class ByteStreamTest {
 				test3();
 				test4();
 				test5();
+				test6();
+				test7();
+				test8();
+				test9();
+				test10();
 				verif_all();
+				shutdown(ep);
 			}
 		});
-
-		ep.shutdown();
 
 	}
 
@@ -44,22 +69,25 @@ public class ByteStreamTest {
 		verif.post(() -> {
 			variable++;
 			System.out.println("\n----------------------");
-			System.out.println("\tTest Numero "+variable);
+			System.out.println("\tTest Numero " + variable);
 			System.out.println("----------------------");
-			
+
 			if (Arrays.equals(m_test, m_tofill)) {
-				System.out.println("\n"+Arrays.toString(m_tofill));
+				System.out.println("\n" + Arrays.toString(m_tofill));
 				System.out.println("\n\tTest PASSED");
+				passed++;
 			} else {
 				System.out.println("\n\tTest FAILED");
 			}
-
+			if (variable == 10) {
+				System.out.println("\n----------------------------------" + "\n\t PASSED : " + passed + " /10");
+			}
 			verif.terminate();
 		});
 	}
 
 	static void test(int capacity, byte[] m_bytes, byte[] m_tofill) {
-
+		
 		ByteOutputStream m_os = new ByteOutputStream(capacity);
 		ByteInputStream m_is = new ByteInputStream(m_os);
 
@@ -105,6 +133,92 @@ public class ByteStreamTest {
 
 	}
 
+	
+	
+	
+	
+	
+	
+//////////////////////////////////////////////////////////////	
+	
+	//Step 2
+	
+//////////////////////////////////////////////////////////////
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	static void test2(int capacity, byte[] m_bytes, byte[] m_tofill) {
+		
+		ByteOutputStream m_os = new ByteOutputStream(capacity);
+		ByteInputStream m_is = new ByteInputStream(m_os);
+		BufferedByteOutputStream m_bufferd_stm = new BufferedByteOutputStream(capacity, m_os);
+
+		Task t = Task.task();
+		Task producer2 = t.newTask("producerTask");
+		Task consumer2 = t.newTask("consumerTask");
+		int[] variable2 = {0};
+		producer2.post(new Runnable() {
+			public void run() {
+				
+
+				for (byte b : m_bytes) {
+					m_bufferd_stm.write(b);
+					variable2[0]++;
+		            System.out.println("Producer: Wrote " + b +"   "+ variable2[0]);
+		        
+				}
+
+				m_bufferd_stm.close();
+				producer2.terminate();
+
+				System.out.println("Closed for producer");
+			}
+		});
+
+		consumer2.post(() -> {
+		    int idx = 0;
+		    while (!m_is.closed() || m_is.available()) {
+		        if (m_is.available()) {
+		            byte readByte = m_is.read();
+		            m_tofill[idx++] = readByte;
+		            
+		            System.out.println("Consumer: Read " + readByte + " count :"+ idx);
+		        }
+		        else if(variable2[0]<=idx) {
+		        	break;
+		        }
+		        
+		        
+		    }
+		    m_os.close();
+		    m_is.close();
+		    consumer2.terminate();
+
+		    System.out.println("Closed for consumer");
+		});
+	}
+
+	static void shutdown(EventPump ep) {
+		Task t = Task.task();
+		Task shutdown = t.newTask("shutdown");
+
+		shutdown.post(() -> {
+			ep.shutdown();
+		});
+	}
+
 	static void test1() {
 		test(10, m_bytes, m_bytestofill);
 	}
@@ -112,21 +226,54 @@ public class ByteStreamTest {
 	static void test2() {
 		test(20, m_word, m_wordtofill);
 	}
+
 	static void test3() {
 		test(20, m_spec, m_spectofill);
 	}
+
 	static void test4() {
 		test(10, m_failed, m_failedtofill);
 	}
+
 	static void test5() {
 		test(10, m_failed2, m_failedtofill);
 	}
+
+	static void test6() {
+		test2(10, m_bytes3, m_bytestofill3);
+	}
+
+	static void test7() {
+		test2(20, m_word3, m_wordtofill3);
+	}
+
+	static void test8() {
+		test2(30, m_spec3, m_spectofill3);
+	}
+
+	static void test9() {
+		test2(40, m_word4, m_wordtofill4);
+	}
+
+	static void test10() {
+		test2(20, m_bytes4, m_bytestofill4);
+	}
+
 	static void verif_all() {
+		// test step 1
 		verif(m_bytes, m_bytestofill);
 		verif(m_word, m_wordtofill);
 		verif(m_spec, m_spectofill);
+		// test create to fail
 		verif(m_failed, m_failedtofill);
 		verif(m_failed2, m_failedtofill2);
+		// test step 2
+		verif(m_bytes3, m_bytestofill3);
+		verif(m_word3, m_wordtofill3);
+		verif(m_spec3, m_spectofill3);
+		verif(m_word4, m_wordtofill4);
+		verif(m_bytes4, m_bytestofill4);
+
 	}
 
 }

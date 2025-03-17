@@ -32,62 +32,79 @@ import oop.streams.OutputStream;
  */
 
 public class BufferedByteOutputStream implements OutputStream {
-    private final int capacity;
-    private final OutputStream os;
-    private final byte[] buffer;
-    private int bufferIndex = 0;
-    private boolean isClosed = false;
+	private final int capacity;
+	private final OutputStream os;
+	private Chunk Head;
+	private Chunk tail;
+	private boolean fermé = false;
 
-    public BufferedByteOutputStream(int capacity, OutputStream os) {
-        this.capacity = capacity;
-        this.os = os;
-        this.buffer = new byte[capacity];
-    }
+	public BufferedByteOutputStream(int capacity, OutputStream os) {
+		this.capacity = capacity;
+		this.os = os;
+		this.Head = new Chunk(capacity);
+		this.tail = Head;
+	}
 
-    @Override
-    public void set(Listener l) {
-        os.set(l);
-    }
+	@Override
+	public void set(Listener l) {
+		os.set(l);
+	}
 
-    @Override
-    public void close() {
-        flush();
-        isClosed = true;
-        os.close();
-    }
+	@Override
+	public void close() {
+		flush();
+		fermé = true;
+		os.close();
+	}
 
-    @Override
-    public boolean closed() {
-        return isClosed;
-    }
+	@Override
+	public boolean closed() {
+		return fermé;
+	}
 
-    @Override
-    public boolean available() {
-        return bufferIndex > 0;
-    }
+	@Override
+	public boolean available() {
+		return !Head.isEmpty();
+	}
 
-    @Override
-    public void write(byte bits) {
-        if (bufferIndex >= capacity) {
-            flush();
-        }
-        buffer[bufferIndex++] = bits;
-    }
+	@Override
+	public void write(byte bits) {
+		System.out.print(tail.getSize());
+		
+		if (tail.isFull()) {
+			flush();
+			tail.setNext(new Chunk(capacity));
+			tail = tail.getNext();
+			tail.setSize(0);
+			
+		}
+		tail.addByte(bits);
+		tail.setSize(tail.getSize()+1);
 
-    @Override
-    public int write(byte[] bytes, int offset, int length) {
-        int written = 0;
-        for (int i = offset; i < offset + length; i++) {
-            write(bytes[i]);
-            written++;
-        }
-        return written;
-    }
+	}
 
-    private void flush() {
-        if (bufferIndex > 0) {
-            os.write(buffer, 0, bufferIndex);
-            bufferIndex = 0;
-        }
-    }
+	@Override
+	public int write(byte[] bytes, int offset, int length) {
+		int written = 0;
+		for (int i = offset; i < offset + length; i++) {
+			write(bytes[i]);
+			written++;
+		}
+		return written;
+	}
+
+	public void flush() {
+	    while (Head != null && !Head.isEmpty()) {
+	        os.write(Head.getBytes(), 0, Head.getSize());
+	        Head = Head.getNext();
+	    }
+
+	    
+	    if (Head == null) { 
+	        Head = new Chunk(capacity);
+	    }
+	    tail = Head;
+	}
+
+
 }
