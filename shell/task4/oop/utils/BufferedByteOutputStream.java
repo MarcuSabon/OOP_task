@@ -66,22 +66,22 @@ public class BufferedByteOutputStream implements OutputStream {
 	public boolean available() {
 		return !Head.isEmpty();
 	}
-
-	@Override
-	public void write(byte bits) {
-		System.out.print(tail.getSize());
-		
-		if (tail.isFull()) {
-			flush();
-			tail.setNext(new Chunk(capacity));
-			tail = tail.getNext();
-			tail.setSize(0);
-			
-		}
-		tail.addByte(bits);
-		tail.setSize(tail.getSize()+1);
-
+	public boolean full() {
+		return tail.isFull();
 	}
+	@Override
+    public void write(byte bits) {
+		//System.out.println("Current tail size: " + tail.getSize());
+
+	    if (tail.isFull()) {
+	        flush();
+	        Chunk newChunk = new Chunk(capacity);
+	        tail.setNext(newChunk);
+	        tail = newChunk;
+	        //System.out.println("New chunk created: " + (tail.getNext() != null));
+	    }
+	    tail.addByte(bits);
+    }
 
 	@Override
 	public int write(byte[] bytes, int offset, int length) {
@@ -98,12 +98,16 @@ public class BufferedByteOutputStream implements OutputStream {
 	        os.write(Head.getBytes(), 0, Head.getSize());
 	        Head = Head.getNext();
 	    }
-
-	    
 	    if (Head == null) { 
 	        Head = new Chunk(capacity);
 	    }
 	    tail = Head;
+//	    
+//	    if (Head == null) { 
+//	        Head = new Chunk(capacity);
+//	        Head.setSize(0);
+//	    }
+//	    tail = Head;
 	}
 
 
