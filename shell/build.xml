@@ -41,6 +41,8 @@
 			<src path="given"/>
 			<src path="_given"/>
 			<src path="task2"/>
+			<src path="task3"/>
+			<src path="task4"/>
 			
 			<classpath refid="jars.classpath" />
 		</javac>
