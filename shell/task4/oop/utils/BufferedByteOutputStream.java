@@ -94,7 +94,7 @@ public class BufferedByteOutputStream implements OutputStream {
 	}
 
 	public void flush() {
-	    while (Head != null && !Head.isEmpty()) {
+	    while (Head != null) {
 	        os.write(Head.getBytes(), 0, Head.getSize());
 	        Head = Head.getNext();
 	    }
@@ -102,12 +102,6 @@ public class BufferedByteOutputStream implements OutputStream {
 	        Head = new Chunk(capacity);
 	    }
 	    tail = Head;
-//	    
-//	    if (Head == null) { 
-//	        Head = new Chunk(capacity);
-//	        Head.setSize(0);
-//	    }
-//	    tail = Head;
 	}
 
 

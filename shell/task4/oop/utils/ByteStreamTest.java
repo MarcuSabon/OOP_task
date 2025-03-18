@@ -35,7 +35,6 @@ public class ByteStreamTest {
 	private static byte[] m_bytestofill4 = new byte[m_bytes4.length];
 
 	private static int variable = 0;
-	private static int variable2 = 0;
 	private static int passed = 0;
 
 	public static void main(String args[]) {
@@ -143,62 +142,50 @@ public class ByteStreamTest {
 		BufferedByteOutputStream m_bufferd_stm = new BufferedByteOutputStream(capacity, m_os);
 
 		Task t = Task.task();
-		Task producer2 = t.newTask("producerTask");
-		Task consumer2 = t.newTask("consumerTask");
-		int[] variable2 = { 0 };
+		Task producer2 = t.newTask("producer2Task");
+		Task consumer2 = t.newTask("consumer2Task");
+		int[] idx = {0};
+		int[] variable2 = {0};
+		
 		producer2.post(new Runnable() {
-			public void run() {
-				int idx = 0;
-				for (byte b : m_bytes) {
-					
-					
-					
-					
-					
-					if(m_bufferd_stm.full()) {
-						
-						
-						m_bufferd_stm.write(b);
-						
-						
-						
-						while (!m_is.closed() || m_is.available()) {
-							if (m_is.available()) {
-								byte readByte = m_is.read();
-								m_tofill[idx++] = readByte;
+	        public void run() {
+	            for (byte b : m_bytes) {
+	                if (m_bufferd_stm.full()) {
+	                    System.out.println("Buffer full, notifying consumer...");
+	                    
+	                    
+	                    	m_bufferd_stm.flush();
+	                        while (m_is.available()) {
+	                            byte readByte = m_is.read();
+	                            m_tofill[idx[0]++] = readByte;
+	                            System.out.println("Consumer : Read " + readByte);
+	                        }
+	                      
+	                    
+	                }
+	                
+	                m_bufferd_stm.write(b);
+	                variable2[0]++;
+	                System.out.println("Producer: Wrote " + b);
+	            }
 
-								System.out.println("Consumer: Read " + readByte + " count :" + idx);
-							} else if (variable2[0] <= idx) {
-								break;
-							}}
-						
-						
-						
-						
-					}
-					m_bufferd_stm.write(b);
-					variable2[0]++;
+	            
+	            m_bufferd_stm.close();
 
-					System.out.println("Producer: Wrote " + b + "   " + variable2[0]);
-
-				}
-
-				m_bufferd_stm.close();
-				producer2.terminate();
-
-				System.out.println("Closed for producer");
-			}
-		});
+	            producer2.terminate();
+	            System.out.println("Closed for producer");
+	        }
+	    });
 
 		consumer2.post(() -> {
-			int idx = 0;
+			
 			while (!m_is.closed() || m_is.available()) {
 				if (m_is.available()) {
 					byte readByte = m_is.read();
-					m_tofill[idx++] = readByte;
+					m_tofill[idx[0]++] = readByte;
 
-					System.out.println("Consumer: Read " + readByte + " count :" + idx);
-				} else if (variable2[0] <= idx) {
+					System.out.println("Consumer: Read " + readByte );
+				} else if (variable2[0] <= idx[0]) {
 					break;
 				}
 
@@ -209,7 +196,9 @@ public class ByteStreamTest {
 
 			System.out.println("Closed for consumer");
 		});
+	
 	}
+
 	
 	static void shutdown(EventPump ep) {
 		Task t = Task.task();
@@ -249,15 +238,15 @@ public class ByteStreamTest {
 	}
 
 	static void test8() {
-		test2(30, m_spec3, m_spectofill3);
+		test2(2, m_spec3, m_spectofill3);
 	}
 
 	static void test9() {
-		test2(40, m_word4, m_wordtofill4);
+		test2(4, m_word4, m_wordtofill4);
 	}
 
 	static void test10() {
-		test2(20, m_bytes4, m_bytestofill4);
+		test2(3, m_bytes4, m_bytestofill4);
 	}
 
 	static void verif_all() {

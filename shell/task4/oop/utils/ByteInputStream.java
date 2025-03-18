@@ -45,4 +45,8 @@ public class ByteInputStream extends ByteStream implements InputStream {
 		}
 		return counter;
 	}
+	@Override
+	public boolean available() {
+		return !m_ring.empty();
+	}
 }

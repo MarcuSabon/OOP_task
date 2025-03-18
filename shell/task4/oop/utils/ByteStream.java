@@ -58,6 +58,10 @@ public abstract class ByteStream implements Stream {
 
     @Override
     public boolean available() {
-    	 return !m_ring.empty();
+        if (isClosed) {
+            return false;  
+        }
+        return !m_ring.empty();
     }
+
 }
