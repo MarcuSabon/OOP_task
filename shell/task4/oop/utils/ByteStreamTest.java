@@ -76,7 +76,8 @@ public class ByteStreamTest {
 				System.out.println("\n\tTest FAILED");
 			}
 			if (variable == 10) {
-				System.out.println("\n----------------------------------" + "\n\t PASSED : " + passed + " /10");
+				System.out.println("\n----------------------------------" + "\n\t PASSED : " + passed + " /10"
+						+ "\n(two are meant to fail)");
 			}
 			verif.terminate();
 		});
