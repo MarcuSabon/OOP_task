@@ -46,7 +46,9 @@
   			  add a tag like this:
   			  	
 			-->		
-			<src path="task1"/>	
+			<src path="task1"/>
+			<src path="tests"/>
+			<src path="task2"/>
 			<src path="given"/>
 			
 			<classpath refid="jars.classpath" />
