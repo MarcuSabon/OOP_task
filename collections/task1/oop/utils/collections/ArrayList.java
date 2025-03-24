@@ -69,7 +69,11 @@ public class ArrayList implements IList {
 		c.toArray(obj);
 		this.thai = c.length();
 	}
-
+	
+	
+	/**
+     * Return un itérateur pour parcourir la liste.
+     */
 	@Override
 	public Iterator iterator() {
 		return new Iterator(this);
@@ -80,6 +84,9 @@ public class ArrayList implements IList {
 		return thai;
 	}
 
+	/**
+     * Retourne l'élément à l'index spé
+     */
 	@Override
 	public Object elementAt(int index) {
 		if (index < 0 || index >= thai) {
@@ -89,6 +96,9 @@ public class ArrayList implements IList {
 		}
 	}
 
+	/**
+     * Maj l'elem à un index donné et return l'ancienne valeur
+     */
 	@Override
 	public Object updateAt(int index, Object obg) {
 		if (index < 0 || index >= thai) {
@@ -106,7 +116,9 @@ public class ArrayList implements IList {
 		if (index < 0) {
 			throw new IndexOutOfBoundsException("Invalid index");
 		}
+		//si taille petit alors fois 2
 		if (thai >= obj.length) {
+			
 		    int newSize = Math.max(obj.length * 2, defaut);
 		    Object[] newElements = new Object[newSize];
 		    System.arraycopy(obj, 0, newElements, 0, thai);
@@ -117,7 +129,9 @@ public class ArrayList implements IList {
 		obj[index] = elem;
 		thai++;
 
-	}
+	}/**
+     * Supp et return l'elem a un index
+     */
 
 	@Override
 	public Object removeAt(int index) {
@@ -144,7 +158,11 @@ public class ArrayList implements IList {
 		}
 		return false;
 	}
-
+	
+	
+	/**
+     * verif si contient
+     */
 	@Override
 	public boolean contains(Object elem) {
 		for (int i = 0; i < thai; i++) {
