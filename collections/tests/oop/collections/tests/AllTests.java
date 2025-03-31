@@ -1,14 +1,16 @@
 package oop.collections.tests;
 
 import oop.collections.IList;
-
+import oop.collections.IMap;
 import oop.utils.collections.ArrayList;
 import oop.utils.collections.LinkedList;
+import oop.utils.collections.HashTable;
 
 public class AllTests {
 	public static void main(String[] args) {
 		IList list = new ArrayList();
 		IList listLink = new LinkedList(new Object[] { "Xin xao" });
+		IMap map = new HashTable();
 		int total = 0;
 		
 		System.out.println("\n<============ TEST ARRAY =============>\n");
@@ -31,6 +33,16 @@ public class AllTests {
 		TestRemove(total,listLink);
 		TestContains(total,listLink);
 		TestToArray(total,listLink);
+		
+		System.out.println("\n<============ TEST HASHTABLE =============>\n");
+		//a implementer
+		TestPut(total, map);
+        TestGet(total, map);
+        TestRemove(total, map);
+        TestContains(total, map);
+        TestKeysToArray(total, map);
+        TestValuesToArray(total, map);
+		
 		if (total == 0) {
 			System.out.println("\nALL TESTS PASSED !!!");
 		} else {
@@ -158,4 +170,54 @@ public class AllTests {
 			System.out.println("TestUpdateAt OK");
 		}
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	////////////////////////////// HASHTABLE /////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////
+	
+	public static void TestPut(int t, IMap map) {
+        map.put("uno", "mark");
+        map.put("dos", "axel");
+        if (!map.get("uno").equals("mark")) t++;
+        if (!map.get("dos").equals("axel")) t++;
+        map.put("tres", "frost");
+       
+        if (!map.get("tres").equals("frost")) t++;
+       
+        System.out.println("TestPut OK");
+    }
+
+    public static void TestGet(int t, IMap map) {
+        if (!map.get("uno").equals("mark")) t++;
+        if (map.get("muchachos") != null) t++;
+        System.out.println("TestGet OK");
+    }
+
+    public static void TestRemove(int t, IMap map) {
+    	map.put("cuatro", "the wall");
+        if (!map.remove("cuatro").equals("the wall")) t++;
+        if (map.contains("cuatro")) t++;
+        System.out.println("TestRemove OK");
+    }
+
+    public static void TestContains(int t, IMap map) {
+        if (!map.contains("uno")) t++;
+        if (map.contains("5_en_espagnol")) t++;
+        System.out.println("TestContains OK");
+    }
+
+    public static void TestKeysToArray(int t, IMap map) {
+        Object[] keys = new Object[map.length()];
+        map.keysToArray(keys);
+        if (keys.length != map.length()) t++;
+        System.out.println("TestKeysToArray OK");
+    }
+
+    public static void TestValuesToArray(int t, IMap map) {
+        Object[] values = new Object[map.length()];
+        map.valuesToArray(values);
+        if (values.length != map.length()) t++;
+        System.out.println("TestValuesToArray OK");
+    }
+	
 }
