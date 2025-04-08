@@ -21,15 +21,6 @@
 		<mkdir dir="${bin.dir}" />
 		<mkdir dir="${jars.dir}" />
 	</target>
-	
-	<target name="tests">
-        <java classname = "oop.collections.tests.AllTests"
-            fork="true"  
-            failonerror="true">  
-            <classpath path="bin"></classpath>  
-        </java>  
-	</target>
-
 
 	<target name="compile" depends="init">
 		<javac destdir="${bin.dir}" 
@@ -46,11 +37,8 @@
   			  add a tag like this:
   			  	
 			-->		
-			<src path="task1"/>
-			<src path="tests"/>
-			<src path="task2"/>
-			<src path="task3"/>
-			<src path="given"/>
+			<src path="task1"/>	
+			
 			
 			<classpath refid="jars.classpath" />
 		</javac>

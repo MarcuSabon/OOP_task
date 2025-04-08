@@ -118,28 +118,30 @@ public class LinkedList implements IList {
 
     @Override
     public void insertAt(int index, Object elem) {
-        if (index < 0 || index > thai) {
-            throw new IndexOutOfBoundsException("Index out of bounds");
+    	if (index < 0) {
+            throw new IndexOutOfBoundsException("Invalid Index");
         }
-        noeud newnoeud = new noeud(elem);
+
+        // Cas où index > thai
+        while (thai < index) {
+            insertAt(thai, null);
+        }
+
+        noeud cell = new noeud(elem);
         if (index == 0) {
-            newnoeud.next = tete;
-            tete = newnoeud;
-            if (thai == 0) {
-                queue = newnoeud;
-            }
+            cell.next = tete;
+            tete = cell;
         } else {
-            noeud pre = tete;
+            noeud current = tete;
             for (int i = 0; i < index - 1; i++) {
-                pre = pre.next;
+                // on se place à la position où on veut insérer
+                current = current.next;
             }
-            newnoeud.next = pre.next;
-            pre.next = newnoeud;
-            if (newnoeud.next == null) {
-                queue = newnoeud;
-            }
+            cell.next = current.next;
+            current.next = cell;
         }
         thai++;
+
     }
     /**
      * trouve l'endroit et Supp 
@@ -212,11 +214,10 @@ public class LinkedList implements IList {
 
     @Override
     public void toArray(Object[] elems) {
-        noeud atm = tete;
-        int i = 0;
-        while (atm != null && i < elems.length) {
-            elems[i++] = atm.donnee;
-            atm = atm.next;
-        }
+        tete = null;
+        thai = 0;
+       for(Object obj: elems) {
+    	   insertAt(thai,obj);
+       }
     }
 }
