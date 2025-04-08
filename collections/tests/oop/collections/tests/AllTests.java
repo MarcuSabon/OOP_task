@@ -74,7 +74,7 @@ public class AllTests {
 	public static void TestInsertAt(int t,IList list) {
 		
 		list.insertAt(0, "A");
-		list.insertAt(1, "C");
+		list.insertAt(2, "C");
 		list.insertAt(1, "B");
 		if (!list.elementAt(0).equals("A")) {
 			t++;
@@ -142,7 +142,7 @@ public class AllTests {
 		
 		list.insertAt(0, 1);
 		list.insertAt(1, 2);
-		Object[] arr = new Object[list.length()];
+		Object[] arr = { 1, 2 } ;
 		list.toArray(arr);
 		if (arr.length != 2) {
 			t++;

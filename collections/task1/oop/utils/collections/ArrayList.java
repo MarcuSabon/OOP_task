@@ -113,23 +113,25 @@ public class ArrayList implements IList {
 
 	@Override
 	public void insertAt(int index, Object elem) {
-		if (index < 0) {
-			throw new IndexOutOfBoundsException("Invalid index");
-		}
-		//si taille petit alors fois 2
-		if (thai >= obj.length) {
-			
-		    int newSize = Math.max(obj.length * 2, defaut);
-		    Object[] newElements = new Object[newSize];
-		    System.arraycopy(obj, 0, newElements, 0, thai);
-		    obj = newElements;
-		}
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("Invalid index");
+        }
+        if (index >= thai) {
 
-		System.arraycopy(obj, index, obj, index + 1, thai - index);
-		obj[index] = elem;
-		thai++;
+            Object[] new_list = new Object[index+1];
+            for(int i = 0 ; i < thai ; i++) {
+                new_list[i] = obj[i];
+            }
+            obj = new_list;
+            thai = index + 1;
 
-	}/**
+
+        }
+        obj[index] = elem;
+
+    }
+	
+	/**
      * Supp et return l'elem a un index
      */
 
@@ -175,7 +177,13 @@ public class ArrayList implements IList {
 
 	@Override
 	public void toArray(Object elems[]) {
-		System.arraycopy(obj, 0, elems, 0, thai);
+		if(thai != elems.length) {
+			obj = new Object[elems.length];
+		}
+		thai = elems.length;
+		for(int i=0 ;i<elems.length;i++) {
+			obj[i] = elems[i];
+		}
 	}
 
 }
