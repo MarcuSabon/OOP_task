@@ -1,4 +1,4 @@
-package oop.collections.tests_yahyah;
+package oop.collections.tests_yahya;
 
 import oop.utils.collections.LinkedList;
 import oop.collections.IList;

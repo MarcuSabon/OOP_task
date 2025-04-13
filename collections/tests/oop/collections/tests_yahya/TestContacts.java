@@ -1,4 +1,4 @@
-//package oop.collections.tests_yahyah;
+//package oop.collections.tests_yahya;
 //
 //import oop.collections.ICollection.Iterator;
 //import oop.contacts.IContacts;
@@ -20,7 +20,7 @@
 //        IName name = contacts.newName("Doe", "John");
 //        IPhoneNumber phone = contacts.newPhoneNumber(33, "123456789");
 //        IContact contact = contacts.add(name, phone);
-//
+//        TestHashTable
 //        assert contact.name().first().equals("John");
 //        assert contact.phone().number().equals("123456789");
 //
@@ -103,3 +103,6 @@
 //        System.out.println("TestContacts passed.\n");
 //    }
 //}
+//package oop;
+
+

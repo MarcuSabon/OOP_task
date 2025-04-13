@@ -1,4 +1,4 @@
-package oop.collections.tests_yahyah;
+package oop.collections.tests_yahya;
 
 public class AllTests {
     public static void main(String[] args) {

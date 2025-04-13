@@ -1,9 +1,15 @@
 package oop.collections.tests;
 
+import oop.collections.ICollection.Iterator;
 import oop.collections.IList;
 import oop.collections.IMap;
+import oop.contacts.IContacts;
+import oop.contacts.IContacts.IContact;
+import oop.contacts.IContacts.IName;
+import oop.contacts.IContacts.IPhoneNumber;
 import oop.utils.collections.ArrayList;
 import oop.utils.collections.LinkedList;
+import oop.utils.contacts.Contacts;
 import oop.utils.collections.HashTable;
 
 public class AllTests {
@@ -42,7 +48,9 @@ public class AllTests {
         TestContains(total, map);
         TestKeysToArray(total, map);
         TestValuesToArray(total, map);
-		
+        System.out.println("\n<============ TEST CONTACTS COMMANDS =============>\n");
+        TestContactsCommands(total);
+
 		if (total == 0) {
 			System.out.println("\nALL TESTS PASSED !!!");
 		} else {
@@ -219,5 +227,62 @@ public class AllTests {
         if (values.length != map.length()) t++;
         System.out.println("TestValuesToArray OK");
     }
-	
+    
+    
+	//////////////////////////////////////////////////////////////////////////////
+	////////////////////////////// CONTACT ///////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    
+    public static void TestContactsCommands(int t) {
+        IContacts contacts = new Contacts();
+
+
+        IName ezrealName = contacts.newName("Ezreal", "");
+        IPhoneNumber ezrealPhone = contacts.newPhoneNumber(1, "212 555 1234");
+        IContact ezreal = contacts.add(ezrealName, ezrealPhone);
+        ezreal.field("email", contacts.newValue("ezreal@league.com"));
+
+        IName luxName = contacts.newName("Lux", "");
+        IPhoneNumber luxPhone = contacts.newPhoneNumber(1, "212 555 5678");
+        IContact lux = contacts.add(luxName, luxPhone);
+        lux.field("email", contacts.newValue("lux@league.com"));
+
+
+        if (!ezreal.name().value().equals("Ezreal") || !lux.phone().value().contains("5678")) t++;
+        else System.out.println("TestContacts Add OK");
+
+
+        ezreal.field("country", contacts.newValue("Demacia"));
+        if (!ezreal.field("country").value().equals("Demacia")) t++;
+        else System.out.println("TestContacts Update Country OK");
+
+
+        Iterator it = contacts.select("name", "E*");
+        boolean foundEzreal = false;
+        while (it.hasNext()) {
+            IContact c = (IContact) it.next();
+            if (c.name().value().equals("Ezreal")) {
+                foundEzreal = true;
+            }
+        }
+        if (!foundEzreal) t++;
+        else System.out.println("TestContacts Select by name OK");
+
+
+        ezreal.field("phone", contacts.newPhoneNumber(1, "212 555 1234"));
+        if (!ezreal.field("phone").value().contains("1234")) t++;
+        else System.out.println("TestContacts Update Phone OK");
+
+
+        contacts.remove(lux);
+        Iterator itLux = contacts.select("name", "Lux");
+        if (itLux.hasNext()) t++;
+        else System.out.println("TestContacts Remove OK");
+
+        
+    }
+
 }

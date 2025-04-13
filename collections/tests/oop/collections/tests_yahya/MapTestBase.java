@@ -1,4 +1,4 @@
-package oop.collections.tests_yahyah;
+package oop.collections.tests_yahya;
 
 import oop.collections.IMap;
 import oop.collections.ICollection;
@@ -25,7 +25,7 @@ public abstract class MapTestBase {
         testContains();
         testKeys();
         testValues();
-        //testEdgeCases();
+        testEdgeCases();
         testStressTest();
     }
 
