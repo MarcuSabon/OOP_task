@@ -3,10 +3,6 @@ package oop.collections.tests;
 import oop.collections.ICollection.Iterator;
 import oop.collections.IList;
 import oop.collections.IMap;
-<<<<<<< HEAD
-import oop.utils.collections.ArrayList;
-import oop.utils.collections.LinkedList;
-=======
 import oop.contacts.IContacts;
 import oop.contacts.IContacts.IContact;
 import oop.contacts.IContacts.IName;
@@ -14,7 +10,7 @@ import oop.contacts.IContacts.IPhoneNumber;
 import oop.utils.collections.ArrayList;
 import oop.utils.collections.LinkedList;
 import oop.utils.contacts.Contacts;
->>>>>>> collections.t4
+
 import oop.utils.collections.HashTable;
 
 public class AllTests {
@@ -53,13 +49,11 @@ public class AllTests {
         TestContains(total, map);
         TestKeysToArray(total, map);
         TestValuesToArray(total, map);
-<<<<<<< HEAD
-		
-=======
+
         System.out.println("\n<============ TEST CONTACTS COMMANDS =============>\n");
         TestContactsCommands(total);
 
->>>>>>> collections.t4
+
 		if (total == 0) {
 			System.out.println("\nALL TESTS PASSED !!!");
 		} else {
@@ -236,10 +230,7 @@ public class AllTests {
         if (values.length != map.length()) t++;
         System.out.println("TestValuesToArray OK");
     }
-<<<<<<< HEAD
-	
-=======
-    
+
     
 	//////////////////////////////////////////////////////////////////////////////
 	////////////////////////////// CONTACT ///////////////////////////////////////
@@ -297,5 +288,5 @@ public class AllTests {
         
     }
 
->>>>>>> collections.t4
+
 }

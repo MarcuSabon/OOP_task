@@ -1,9 +1,6 @@
 package oop.utils.contacts;
 
-<<<<<<< HEAD
-public class Contacts {
 
-=======
 import oop.collections.ICollection.Iterator;
 import oop.collections.IList;
 import oop.collections.IMap;
@@ -163,6 +160,5 @@ public class Contacts implements IContacts {
 		}
 
 	}
-	
->>>>>>> ea7c843 (t4 finish alltests passed)
+
 }
