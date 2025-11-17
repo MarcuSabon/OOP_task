@@ -40,8 +40,4 @@ Each folder or file represents a project or a learning milestone, often accompan
 * **GitHub**: [https://github.com/MarcuSabon](https://github.com/MarcuSabon)
 * **Focus Areas**: Object-Oriented Programming, algorithms and data structures, automation with shell scripting
 
----
 
-## 📜 License
-
-MIT – free to use and modify.
